@@ -1,0 +1,30 @@
+.content-card-task{
+    margin-top: 3.5%;
+
+}
+.lblTaskEnd{
+    text-decoration: line-through;
+}
+#form-task{
+}
+#card-settings{
+    width: 2%;
+    text-align: justify;
+    float: right;
+    display: flex;
+}
+#icon-setting-task{
+    cursor: pointer;
+}
+
+.hidden-modal{
+    background-color: red;
+    display: none;
+}
+
+.open-modal{
+    background-color: green;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+}
