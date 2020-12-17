@@ -12,7 +12,9 @@ ReactDOM.render(
       <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="src/components/TaskComponent/popover.js"></script> 
       </head>
-    <App />
+      <body id="body">
+      <App />
+      </body>
   </React.Fragment>,
   document.getElementById('root')
 );

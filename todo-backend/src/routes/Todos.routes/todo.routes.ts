@@ -12,7 +12,7 @@ router.post('',(req,res,next) =>{
    return todoController.postCreateTodo(req,res,next);
 });
 
-router.get('/id/',(req,res,next) =>{
+router.get('/:id',(req,res,next) =>{
    return todoController.getTodoById(req,res,next);
 });
 

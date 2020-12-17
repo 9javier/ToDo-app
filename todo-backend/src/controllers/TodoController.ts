@@ -36,7 +36,7 @@ export default class TodoController {
   async getTodoById(request,res,next){
     try{
       const findTodoByIdCommand = new FindTodoByIdCommand();
-      const response = await findTodoByIdCommand.findById(request.query.id)
+      const response = await findTodoByIdCommand.findById(request.params.id)
       return  res.json({ status: 200, response });
     }catch(error){
       console.log(error)

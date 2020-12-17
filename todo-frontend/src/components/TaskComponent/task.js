@@ -1,31 +1,24 @@
-import React,{ useEffect, useState  }from 'react';
+import React from 'react';
 import './task.style.css';
 import axios from 'axios';
-import {Popover, OverlayTrigger ,Button} from 'react-bootstrap'
+import { Popover } from 'react-bootstrap'
 import Overlay from 'react-bootstrap/Overlay'
-import PropTypes from 'prop-types';
-
 
 class TaskComponent extends React.Component {
-
     constructor(props){
         super(props);
     }
-
-    
+ 
     state = {
         stateTask: false,
         target: null,
         show: false,
         ref: null,
         taskId: this.props.id,
-        actionNumber: 0
     }
 
-   
-
     componentWillMount () {
-        this.setState({stateTask: parseInt(this.props.state) == 1 ? true : false}); 
+        this.setState({stateTask: parseInt(this.props.state) == 1 ? true : false});
               
     }
 
@@ -55,65 +48,57 @@ class TaskComponent extends React.Component {
           this.setState({show: false})
       }
 
-    
-    
-      editTaskEvent= ()=>{
-      }     
-    
-
     render(){
-        const { handleTask } = this.props;
-        const { editTaskEvent } = this.props;
+        const handleTask = (e) => {
+            closeModal();
+            e.taskId = this.state.taskId;
+            e.event = 'delete';
+        }
 
-        return(
-            <div className="content-card-task">
+        const editTaskEvent = (e) => {
+            closeModal();
+            e.event = 'update';
+            e.taskId = this.state.taskId;
+        }
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-check" id="form-task">
-                            <input type="checkbox" class="form-check-input" id="check-task"
-                                checked={this.state.stateTask}
-                                value={this.state.stateTask}
-                                onChange={ this.handleStateTask}/>
-                            <label class="form-check-label" for="exampleCheck1" 
-                            className={this.state.stateTask == true ? 'lblTaskEnd': ''}>{this.props.title}</label>
-                           <div id="card-settings">
-                                <div ref={this.state.ref}>
+        const closeModal = () => {
+            this.setState({ show: false })
+        }
 
-                                    <i class="fas fa-ellipsis-v" placement="right" id="icon-setting-task" onClick={this.handleClick}></i>
-
-                                    <Overlay 
-                                    disabled
-                                        show={this.state.show}
-                                        target={this.state.target}
-                                        placement="bottom"
-                                        containerPadding={20}>
-                                        <Popover id="popover-contained">
-                                            <Popover.Title as="h3" id="title-action" onClick={this.modalDissmis}>Acción</Popover.Title>
-                                            <Popover.Content>
-                                            {/*<button  type="button" class="btn btn-light" onClick={()=>editTaskEvent(this.state)} onChange={()=>this.changeActionModal}>Editar</button><br></br>*/}
-                                            <button type="button" class="btn btn-danger" 
-                                            onClick={()=>handleTask(this.state) }>Eliminar Tarea</button>
-                                            </Popover.Content>
-                                        </Popover> 
-                                    </Overlay>
-                                </div>
-          
-                           </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ return(
+     /** Card Task */
+     <div className="content-card-task">
+         <div class="card">
+             <div class="card-body">
+                 <div class="form-check" id="form-task">
+                     <input type="checkbox" class="form-check-input" id="check-task" checked={this.state.stateTask}
+                         value={this.state.stateTask}
+                         onChange={this.handleStateTask} />
+                     <label class="form-check-label" id="txtTitleTask"
+                         className={this.state.stateTask == true ? 'lblTaskEnd' : ''}>{this.props.title}</label>
+                          {/* Settings for each task*/}
+                     <div id="card-settings">
+                         <div ref={this.state.ref}>
+                             <i class="fas fa-ellipsis-v" placement="right" id="icon-setting-task" onClick={this.handleClick}></i>
+                             <Overlay disabled show={this.state.show} target={this.state.target} placement="bottom" containerPadding={20}>
+                                 <Popover id="popover-contained">
+                                    <Popover.Title as="h3" id="title-action" onClick={this.modalDissmis}>Acción</Popover.Title>
+                                     <Popover.Content>
+                                         <button type="button" class="btn btn-light" onClick={editTaskEvent}><i class="fas fa-edit"></i></button><br></br>
+                                         <button type="button" class="btn btn-light" onClick={handleTask}><i class="fas fa-trash-alt"></i></button>
+                                     </Popover.Content>
+                                 </Popover>
+                             </Overlay>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
         )
 
     }
     
-}
-
-
-TaskComponent.propTypes = {
-    handleTask: PropTypes.func.isRequired,
-    editTaskEvent: PropTypes.func.isRequired
 }
 
 export default TaskComponent;

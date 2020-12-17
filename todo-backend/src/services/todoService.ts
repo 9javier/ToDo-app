@@ -22,10 +22,10 @@ export default class ProductServices {
 
     /**Update a complete Todo */
     async updateTodoById(todo:Todo){
+        console.log(todo)
         const id_todo:any = todo.id;
-        Todo.update(
-            todo,
-            {where: id_todo}
+        Todo.update({...todo},
+            {where: {id: id_todo}}
           );
     }
 

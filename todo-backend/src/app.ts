@@ -1,12 +1,14 @@
 import * as express from "express"
 import { sequlize } from "./database";
 import  router from './routes/routes';
+import * as dotenv from 'dotenv';
 
-
-const app = express()
+dotenv.config();
+const app = express();
 app.set('port', process.env.PORT || 4000);
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+
 
 app.use(router);
 
