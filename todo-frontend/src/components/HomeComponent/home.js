@@ -71,6 +71,8 @@ export default class Home extends React.Component {
             this.setState({createModal: false})
             this.getAllTask();
              }, 600);  
+        }else if(e.modalCreate == false){
+            this.setState({createModal: false})
         }
     }
 

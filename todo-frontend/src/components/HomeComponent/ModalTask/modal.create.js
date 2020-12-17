@@ -36,6 +36,12 @@ import TODO_SERVICES from '../../../services/to-do-services';
         this.setState({modalState: false})
     }
 
+    const dismiss = (e) =>{
+      console.log("Hijo: Cancelar")
+      e.modalCreate = false;
+      this.setState({modalState: false})
+    }
+
 
       return(
         <Fragment>
@@ -47,11 +53,11 @@ import TODO_SERVICES from '../../../services/to-do-services';
        <Modal.Body>
          <div class="md-form active-purple-2 mb-3" id="active-purple-2">
            <input id="title-task" class="form-control" type="text" onChange={this.inputTask}
-             placeholder="Editar Tarea" aria-label="Search" value={this.state.txtTask}/>
+             placeholder="Crear Tarea" aria-label="Search" value={this.state.txtTask}/>
          </div>        
          </Modal.Body>
        <Modal.Footer>
-         <Button onClick={handleModalCreate}>Cancelar</Button>
+         <Button onClick={dismiss}>Cancelar</Button>
          <Button onClick={handleModalCreate}>Guardar</Button>
        </Modal.Footer>
     </Modal>
