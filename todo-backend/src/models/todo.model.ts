@@ -20,11 +20,14 @@ export default class Todo extends Model implements Todo{
     @PrimaryKey
     @Column
     id?: number
+
+    @Column
+    date: Date
     
     @AllowNull(false)
     @NotEmpty
     @Column
-    name: string
+    description: string
 
     @AllowNull(false)
     @NotEmpty

@@ -16,7 +16,6 @@ app.listen(process.env.PORT || 4000, () => {
     console.log(`App runing at port ${process.env.PORT}`)
     sequlize.authenticate().then(async() => {
         console.log("database connected")
-
         try {
             await sequlize.sync({force: true})
         } catch (error) {

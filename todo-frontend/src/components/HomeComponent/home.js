@@ -7,6 +7,7 @@ import  ModalTaskComponent  from './ModalTask/modal.task';
 import  ModalTaskCreate  from './ModalTask/modal.create';
 import Table from 'react-bootstrap/Table';
 import TaskInfoComponent from '../TaskInfoComponent/taskInfoComponent';
+import { format } from "date-fns";
 export default class Home extends React.Component {
 
     constructor(todoServices ){
@@ -69,7 +70,6 @@ export default class Home extends React.Component {
     }
 
     handleCreateModal = (e) =>{
-        console.log(e)
         if(e.modalCreate == true){
             setTimeout(async ()=>{
             this.setState({createModal: false})
@@ -79,8 +79,6 @@ export default class Home extends React.Component {
             this.setState({createModal: false})
         }
     }
-
-    
 
     openTask=(taskId)=>{
         this.setState({infoTask: true,editTakId: taskId})
@@ -115,70 +113,87 @@ export default class Home extends React.Component {
         }
     }
 
-    render() {
-        let filterTask = this.state.taskList.filter(
-            (task) => {
-                return task.title.toLowerCase().indexOf(
-                    this.state.txtSearch) !== -1
+    handlerFilter = async (e)=>{
+        if(e.dateTask == true){
+            const tasks = await this.todoServices.getAllTodos();
+            this.setState({taskList: tasks.response})
+            let filterTask = this.state.taskList.filter(
+                (task) => {
+                    const dateFormat = new Date(task.date);
+                    let date = format(dateFormat, "yyyy-MM-dd");
+                    console.log("dsa",date,"FDSf",e.dateValue)
+                    return date.indexOf(
+                        e.dateValue) !== -1
+                }
+            );
+            if(filterTask.length >0){
+                this.setState({taskList: filterTask});
+            }else{
+                alert('No se encuentra ninguna tarea con esa fecha!');
             }
-        );
+        }
+    }
+
+    dateTask = (date)=>{
+        const dateFormat = new Date(date+'');
+        return format(dateFormat, "dd/MMM/yyyy")
+    }
+
+    render() {
 return (
     <Fragment>
-               <h3 id="title-app">My Tasks</h3>
+        <h3 id="title-app">My Tasks</h3>
+        <div className="main-content" class="d-flex justify-content-center">
+            <div className="content-table">
+                {
+                    this.state.infoTask == true ?
+                        <div className="task-info-wrap">
+                            <div className="task-info" onClick={this.handleTaskInfo} 
+                                onChange={this.handleTaskChange}>
+                                <TaskInfoComponent id={this.state.editTakId} />
+                            </div>
+                        </div> : ''
+                }
+                <div onClick={this.handlerNewTask} onChange={this.handlerFilter}>
+                    <HeaderComponent />
+                </div>
+                {/**Task Table */}
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Title</th>
+                            <th>Created</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.taskList.map((task, index) => {
+                                return (
+                                    <tr className="row-task" onClick={() => this.openTask(task.id)} >
+                                        <TaskComponent id={task.id} title={task.title} 
+                                        date={this.dateTask(task.date)} desc={task.description}
+                                         status={task.completed} />
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </Table>
+                {  /**   Modal Create Task */
+                    this.state.createModal == true ?
+                        <div onClick={this.handleCreateModal}>
+                            <ModalTaskCreate />
+                        </div> : ''}
 
-    <div className="main-content" class="d-flex justify-content-center">
-             <div className="content-table">
-             {
-            this.state.infoTask == true ?
-                <div className="task-info-wrap">
-                    <div className="task-info" onClick={this.handleTaskInfo} onChange={this.handleTaskChange}>
-                        <TaskInfoComponent id={this.state.editTakId}/>
-                    </div>
-                </div>: ''
-        }
-        <div onClick={this.handlerNewTask}>
-        <HeaderComponent/>
+                {  /**   Modal Edit Task */
+                    this.state.editModal == true ?
+                        <div onClick={this.handleModalEdit}>
+                            <ModalTaskComponent idTask={this.state.editTakId} />
+                        </div> : ''}
+            </div>
         </div>
-        {/**Task Table */}
-        <Table responsive>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Title</th>
-      <th>Created</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      {
-
-          this.state.taskList.map((task,index) =>{
-           return(
-            <tr className="row-task" onClick={()=>this.openTask(task.id)} >
-               <TaskComponent id={task.id} title={task.title} date="31-12-2020" name={task.name} status={task.completed}/>
-            </tr>
-               )
-          })
-      }
-    
-  </tbody>
-</Table>
-        
-       
-        {  /**   Modal Create Task */
-        this.state.createModal == true ?
-            <div onClick={this.handleCreateModal}>
-                <ModalTaskCreate />
-            </div> : ''}
-
-        {  /**   Modal Edit Task */ 
-         this.state.editModal == true ?
-            <div onClick={this.handleModalEdit}>
-                <ModalTaskComponent idTask={this.state.editTakId} />
-            </div> : ''}
-             </div>
-        
-    </div>
     </Fragment>
         )
     }

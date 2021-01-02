@@ -40,14 +40,12 @@
       align-items: center;
       justify-content: center;
   }
-
   .text-description{
       width: 100%;
       text-align: center;
       text-justify: distribute;
       text-align-last: left;
   }
-
   p{
     text-align: justify;
     text-justify: inter-word;

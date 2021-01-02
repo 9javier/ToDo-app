@@ -25,3 +25,15 @@ cursor: pointer;
 #Theme{
     cursor: pointer;
 }
+
+#input-date{
+width: 15%;
+min-width: 80px;
+cursor: pointer;
+}
+.actions{
+    width: 80%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}

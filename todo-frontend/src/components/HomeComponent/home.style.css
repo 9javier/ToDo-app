@@ -58,7 +58,8 @@ height: 500px;
   border: none;
   padding: 8px 26px;
   background-color: white;
-  margin-right: 2%;
+  margin-right: 4%;
+  margin-left: 3%;
 }
 
 .button-task:hover{

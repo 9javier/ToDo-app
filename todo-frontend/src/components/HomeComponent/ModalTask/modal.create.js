@@ -21,7 +21,7 @@ import './modal-create.style.css';
           if (this.state.txtTask != "" && this.state.txtTask.length > 0) {
               const taskName = this.state.txtTask;
               const description = this.state.txtDesc;
-              const todo = { name: description, title: taskName, completed: false }
+              const todo = { description, title: taskName, completed: false }
               let response = await this.todoServices.createTodo(todo);
           }
       }

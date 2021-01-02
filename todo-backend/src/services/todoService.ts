@@ -11,7 +11,8 @@ export default class ProductServices {
     }
 
     /**Create a new Todo */
-    async postNewTodo(todo:any){
+    async postNewTodo(body:any){
+        const todo = {...body,date: new Date()};
         return await Todo.create(todo)
     }
 
@@ -22,7 +23,7 @@ export default class ProductServices {
 
     /**Update a complete Todo */
     async updateTodoById(todo:Todo){
-        console.log(todo)
+        todo.date = new Date();
         const id_todo:any = todo.id;
         Todo.update({...todo},
             {where: {id: id_todo}}
@@ -33,6 +34,7 @@ export default class ProductServices {
   async  updateCompleted(id:number,completed:Boolean){
       return await  Todo.update({
             completed,
+            date: new Date()
         },{
             where:{ id: id}
         });
