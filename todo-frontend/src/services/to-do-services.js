@@ -31,4 +31,9 @@ export default class TODO_SERVICES {
             .then(response => { return response});
     }
 
+    async updateTaskState(id,body) {
+        await axios.patch(`${this.API_URL}/todos/${id}`, body)
+            .then(response => { return response});
+    }
+
 }

@@ -1,0 +1,54 @@
+.task-info-main{
+    margin-top: 9%;
+    align-items: center;
+    justify-content: center;
+    height: 75%;
+}
+.header{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+#close-info{
+    font-size: 50px;
+    cursor: pointer;
+    margin-right: 3%;
+    font-weight: 100;
+}
+.task-info-body{
+    display: block;
+    width: 85%;
+    height: 100%;
+}
+#select-state{
+    margin-bottom: 9px;
+}
+.button {
+    border: none;
+    padding: 8px 26px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px;
+  }
+  .wrap-task-info{
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .text-description{
+      width: 100%;
+      text-align: center;
+      text-justify: distribute;
+      text-align-last: left;
+  }
+
+  p{
+    text-align: justify;
+    text-justify: inter-word;
+  }

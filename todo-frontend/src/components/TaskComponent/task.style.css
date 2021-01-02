@@ -30,3 +30,13 @@
 #txtTitleTask{
 font-size: 20px;
 }
+.row-task{
+    cursor: pointer;
+}
+#check-active{
+color: green;
+}
+#check-desactive{
+text-decoration: none;
+color: #cacdd1!important;
+}

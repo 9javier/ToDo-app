@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button,FormControl } from 'react-bootstrap';
 import TODO_SERVICES from '../../../services/to-do-services';
+import './modal-create.style.css';
 
   class ModalTaskComponent extends React.Component{
 
@@ -12,7 +13,8 @@ import TODO_SERVICES from '../../../services/to-do-services';
 
     state = {
       modalState: true,
-      txtTask: ''
+      txtTask: '',
+      txtDesc: ''
     }
 
     componentWillMount() {
@@ -22,16 +24,22 @@ import TODO_SERVICES from '../../../services/to-do-services';
    async getTask(id){
     const todo = await this.todoServices.getTaskById(id);
     this.setState({txtTask: todo.response.title})
+    this.setState({txtDesc: todo.response.name})
    }
 
     async editTask (){
       const textNewTask = this.state.txtTask;
-      let body = {id:this.props.idTask,title:  textNewTask, name: textNewTask};
+      const description = this.state.txtDesc;
+      let body = {id:this.props.idTask,title:  textNewTask, name: description};
       await this.todoServices.updateTask(body);
   }
 
   inputTask = (event) =>{
       this.setState({ txtTask: event.target.value });
+  }
+
+  inputDesc = (event) => {
+    this.setState({txtDesc: event.target.value});
   }
     
     render(){
@@ -46,21 +54,32 @@ import TODO_SERVICES from '../../../services/to-do-services';
       return(
         <Fragment>
   <Modal show={this.state.modalState} onHide={this.state.modalState}
-       size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-       <Modal.Header>
-         Editar Tarea
-               </Modal.Header>
-       <Modal.Body>
-         <div class="md-form active-purple-2 mb-3" id="active-purple-2">
-           <input id="title-task" class="form-control" type="text" onChange={this.inputTask}
-             placeholder="Editar Tarea" aria-label="Search" value={this.state.txtTask}/>
-         </div>        
-         </Modal.Body>
-       <Modal.Footer>
-         <Button onClick={handleModalEdit}>Cancelar</Button>
-         <Button onClick={handleModalEdit}>Guardar</Button>
-       </Modal.Footer>
-     </Modal>
+        aria-labelledby="contained-modal-title-vcenter" centered>
+        <div className="main-modal">
+        <div className="modalContent">
+           
+        <div className="modal-headers">
+         <strong>Edit Task</strong>
+       </div><br></br>
+         <label>Title(Required)</label>
+        <FormControl className="input-text" id="input-text"
+        onChange={this.inputTask}
+      aria-label="Recipient's username"
+      aria-describedby="basic-addon2"
+      value={this.state.txtTask}/>
+      <label>Description</label>
+      <FormControl className="input-text" id="input-text"
+      as="textarea" aria-label="With textarea" 
+      onChange={this.inputDesc}
+       value={this.state.txtDesc}/><br></br>   
+      <div className="footer-modal">
+        <button  onClick={handleModalEdit} className="btn-cancel button">Cancel</button> 
+        <button  onClick={handleModalEdit} className="btn-save button">Save</button>
+      </div>
+        </div>
+       
+        </div>
+      </Modal>
    </Fragment>  
       )
     }

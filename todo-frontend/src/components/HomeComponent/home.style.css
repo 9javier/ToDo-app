@@ -1,3 +1,4 @@
+
 .task-content{
     display: block;
     width: 80%;
@@ -18,5 +19,111 @@
   box-shadow: 0 1px 0 0 #5DADE2 ;
   }
 
- 
- 
+.task-info{
+z-index: 1;
+position: absolute;
+background-color:#fff;
+width: 28%;
+height: 100%;
+border-left: 1px solid #c9c5c5;
+box-shadow: 1px 1px 16px 1px  #9a9ea0 ;
+}
+.task-info-wrap{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+td{
+    max-width: 25px;
+    max-height: 10px;
+}
+#title-app{
+  
+  margin-left: 3%;
+}
+.main-content{
+width: 100%;
+height: 500px;
+}
+.content-table{
+  width: 95%;
+  height: 500px;
+  background-color: white;
+}
+
+.button-task{
+  font-weight: 600;
+  color: #0d69cc;
+  text-decoration: none;
+  border: none;
+  padding: 8px 26px;
+  background-color: white;
+  margin-right: 2%;
+}
+
+.button-task:hover{
+  border: 1px solid white;
+  background-color: rgb(211, 207, 207);;
+  border: 1.5px solid rgb(230, 225, 225);
+}
+
+#button-task:focus{
+  border: 1px solid white;
+}
+
+.button-normal{
+  font-weight: 600;
+  font-size: 12px;
+  color: black;
+  text-decoration: none;
+  border: none;
+  padding: 8px 26px;
+  background-color: rgb(226, 223, 223);
+  margin-right: 2%;
+}
+
+#button-normal:focus{
+background-color: rgb(230, 225, 225);
+border: 1.5px solid rgb(230, 225, 225);
+}
+
+#button-normal:hover{
+  border: 1px solid white;
+  background-color: rgb(211, 207, 207);;
+  border: 1.5px solid rgb(230, 225, 225);
+  }
+
+#icon-image{
+  color: rgb(6, 89, 184);
+  text-decoration: none;
+}
+
+@media only screen and (min-width: 1201px) and (max-width:1300px){
+  .task-info{
+    width: 35%;
+    }
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1200px){
+  .task-info{
+    width: 45%;
+    }
+}
+
+@media only screen and (min-width: 601px)  and (max-width: 900px) {
+  .task-info{
+    width: 45%;
+    }
+}
+
+@media only screen and (min-width: 501px) and (max-width: 600px)  {
+  .task-info{
+    width: 45%;
+    }
+}
+
+@media only screen and (min-width: 200px) and (max-width: 500px) {
+  .task-info{
+    width: 68%;
+    }
+}
