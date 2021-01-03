@@ -1,7 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Modal, Button,FormControl } from 'react-bootstrap';
 import TODO_SERVICES from '../../../services/to-do-services';
 import './modal-create.style.css';
+import { connect } from 'react-redux';
+import {show_edit, close_edit} from '../../../redux/actions/modalEdit.actions';
   class ModalTaskComponent extends React.Component{
     constructor(props,todoServices ){
       super(props);
@@ -14,6 +16,7 @@ import './modal-create.style.css';
     }
 
     componentWillMount() {
+      console.log(this.props)
       this.getTask(this.props.idTask);
    }
 
@@ -42,12 +45,13 @@ import './modal-create.style.css';
     const handleModalEdit = (e)=>{
       this.editTask();
         e.modalEdit = true;
-        this.setState({modalState: false})
+        this.setState({modalState: false});
+        this.props.close_edit();
     }
 
       return(
         <Fragment>
-          <Modal show={this.state.modalState} onHide={this.state.modalState}
+          <Modal show={this.props.state.modalEditTask} onHide={this.props.state.modalEditTask}
             aria-labelledby="contained-modal-title-vcenter" centered>
             <div className="main-modal">
               <div className="modalContent">
@@ -67,7 +71,7 @@ import './modal-create.style.css';
                   value={this.state.txtDesc} /><br></br>
 
                 <div className="footer-modal">
-                  <button onClick={handleModalEdit} className="btn-cancel button">Cancel</button>
+                  <button onClick={this.props.close_edit} className="btn-cancel button">Cancel</button>
                   <button onClick={handleModalEdit} className="btn-save button">Save</button>
                 </div>
               </div>
@@ -77,4 +81,21 @@ import './modal-create.style.css';
       )
     }
   }  
-export default ModalTaskComponent;
+
+  const mapDispatchToProps =(dispatch)=>{
+    return {
+      show_edit: ()=> dispatch(show_edit()),
+      close_edit: ()=> dispatch(close_edit())
+    }
+  }
+
+  const mapStateProps = (state)=>{
+    return {
+     state
+    }
+  }
+
+export default connect(
+    mapStateProps,
+    mapDispatchToProps
+  )(ModalTaskComponent);

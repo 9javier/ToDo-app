@@ -2,10 +2,11 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Modal, Button ,FormControl} from 'react-bootstrap';
 import TODO_SERVICES from '../../../services/to-do-services';
 import './modal-create.style.css';
-
+import { connect } from 'react-redux';
+import {show, close} from '../../../redux/actions/modalCreate.actions';
   class ModalTaskCreate extends React.Component{
 
-    constructor(props,todoServices ){
+    constructor(props,todoServices){
       super(props);
       this.todoServices = new TODO_SERVICES();
   }
@@ -13,92 +14,126 @@ import './modal-create.style.css';
     state = {
       modalState: true,
       txtTask: '',
-      txtDesc: ''
+      txtDesc: '',
+      validate: {title: false, desc: false}
     }
 
-      async createTask() {
+    componentWillMount() {
+      console.log(this.props)  
+    }
 
-          if (this.state.txtTask != "" && this.state.txtTask.length > 0) {
+
+      createTask = async ()=> {
               const taskName = this.state.txtTask;
               const description = this.state.txtDesc;
               const todo = { description, title: taskName, completed: false }
               let response = await this.todoServices.createTodo(todo);
-          }
+              this.closeModal();
       }
 
   inputTask = (event) =>{
-      this.setState({ txtTask: event.target.value });
+      this.setState({ 
+        txtTask: event.target.value, 
+        validate:{title: false,desc:false}
+      });
   }
 
   inputDesc = (event)=>{
-    this.setState({txtDesc: event.target.value})
+    this.setState({
+      txtDesc: event.target.value,
+      validate:{title: false,desc:false}
+    })
   }
     
+
+   closeModal = ()=> {
+    this.props.close()
+   }
+
+    openModal = ()=> {
+     this.props.show()
+     console.log(this.props)
+   }
+
+
+
     render(){
-
     const handleModalCreate = (e)=>{
-        this.createTask();
+      if(validateForm() == true){
         e.modalCreate = true;
-        this.setState({modalState: false})
+        this.createTask(); 
+      }
     }
 
-    const dismiss = (e) =>{
-      console.log("Hijo: Cancelar")
-      e.modalCreate = false;
-      this.setState({modalState: false})
+    const validateForm =()=>{
+      const validate = this.state.validate;
+      if(this.state.txtTask != "" && this.state.txtTask.length > 0){
+        if(this.state.txtDesc != "" && this.state.txtTask.length > 0){
+          return true;
+        }else{
+          this.setState({
+            validate: {...this.state.validate,desc:true}
+          })
+        }
+      }else{
+        this.setState({
+          validate: {...this.state.validate,title:true}
+        })
+      }
+      return false
     }
 
-
-      return(
-        <Fragment>
-    <Modal show={this.state.modalState} onHide={this.state.modalState}
-        aria-labelledby="contained-modal-title-vcenter" centered>
-          <div className="main-modal">
-          <div className="modalContent">
-        <div className="modal-headers">
-         <strong>New Task</strong>
-       </div><br></br>
-        <label>Title(Required)</label>
-        <FormControl className="input-text" id="input-text"
-        onChange={this.inputTask}
-      aria-label="Recipient's username"
-      aria-describedby="basic-addon2"/>
-      <label>Description</label>
-      <FormControl as="textarea" aria-label="With textarea" onChange={this.inputDesc}
-      className="input-text"  id="input-text"/><br></br>
-     
-
-        <div className="footer-modal">
-        <button  onClick={dismiss} className="btn-cancel button">Cancel</button> 
-        <button  onClick={handleModalCreate} className="btn-save button">Save</button>
-        </div>
-        
-       
-      
-        </div>
-          </div>
-        
     
-       {/*<Modal.Header>
-         Crear Tarea
-       </Modal.Header>
-       <Modal.Body>
-         <div class="md-form active-purple-2 mb-3" id="active-purple-2">
-           <input id="title-task" class="form-control" type="text" onChange={this.inputTask}
-             placeholder="Crear Tarea" aria-label="Search" value={this.state.txtTask}/>
-         </div>        
-         </Modal.Body>
-       <Modal.Footer>
-         <Button onClick={dismiss}>Cancelar</Button>
-         <Button onClick={handleModalCreate}>Guardar</Button>
-       </Modal.Footer>*/}
-    </Modal>
+
+  return(
+        <Fragment>
+      <Modal show={this.props.state.modalCreateTask} onHide={this.props.state.modalCreateTask}
+        aria-labelledby="contained-modal-title-vcenter" centered>
+        <div className="main-modal">
+          <div className="modalContent">
+            <div className="modal-headers">
+              <strong>New Task</strong>
+            </div><br></br>
+            <label>Title(Required)</label>
+            <FormControl className="input-text" id="input-text"
+              onChange={this.inputTask}
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2" />
+              <label id="label-error"
+              className={this.state.validate.title == true ? 'error-active' : 'error-desactive'}> Required
+              </label><br></br>
+            <label>Description</label>
+            <FormControl as="textarea" aria-label="With textarea" onChange={this.inputDesc}
+              className="input-text" id="input-text" />
+              <label id="label-error" 
+                className={this.state.validate.desc == true ? 'error-active' : 'error-desactive'}>Required
+              </label><br></br>
+            <div className="footer-modal">
+              <button onClick={this.closeModal} className="btn-cancel button">Cancel</button>
+              <button onClick={handleModalCreate} className="btn-save button">Save</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
    </Fragment>  
       )
     }
     
 
   }
+
+  const mapDispatchToProps =(dispatch)=>{
+    return {
+      show: ()=> dispatch(show()),
+      close: ()=> dispatch(close())
+    }
+  }
+
+  const mapStateProps = (state)=>{
+    return {
+     state
+    }
+  }
   
     
-export default ModalTaskCreate;
+export default connect(mapStateProps,mapDispatchToProps)(ModalTaskCreate);

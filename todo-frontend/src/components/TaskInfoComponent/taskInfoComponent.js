@@ -3,15 +3,17 @@ import './task-info.style.css';
 import {Form} from 'react-bootstrap';
 import TODO_SERVICES from '../../services/to-do-services';
 import { format } from "date-fns";
+import {connect } from 'react-redux';
+import {show_edit, close_edit} from '../../redux/actions/modalEdit.actions';
 
-const TaskInfoComponent = (props) => {
+const TaskInfoComponent = ({id,show_edit}) => {
 
     const [stateView,setStateView] = useState(true);
     const [task,setTask] = useState({title: '',description: '', status: 0, date: ''});
     const todoServices = new TODO_SERVICES();
 
     useEffect(async () => {
-        getTaskById(props.id)
+        getTaskById(id)
     },task);
 
     const getTaskById = async (id) =>{
@@ -32,11 +34,11 @@ const TaskInfoComponent = (props) => {
 
     const handleModalEdit = (e) =>{
         e.modalEdit = true;
-        e.taskId = props.id;
+        e.taskId = id;
     }
 
     const handleModalDelete = (e) =>{
-        deleteTask(props.id)
+        deleteTask(id)
         e.modalDelete = true;
     }
 
@@ -49,8 +51,8 @@ const TaskInfoComponent = (props) => {
 
     const updateStateTask = async (body) =>{
         const todoServices = new TODO_SERVICES();
-        const res = await todoServices.updateTaskState(props.id,body);
-        getTaskById(props.id);
+        const res = await todoServices.updateTaskState(id,body);
+        getTaskById(id);
     }
 
     return (
@@ -79,7 +81,7 @@ const TaskInfoComponent = (props) => {
                                 <br></br>by Peter Smith
                             </p>
                             <div>
-                                <button className="button-normal" id="button-normal" onClick={handleModalEdit}><i class="fas fa-pencil-alt" id="icon-image"></i>{' '}Edit</button>
+                                <button className="button-normal" id="button-normal" onClick={show_edit}><i class="fas fa-pencil-alt" id="icon-image"></i>{' '}Edit</button>
                                 <button className="button-normal" id="button-normal" onClick={handleModalDelete}><i class="fas fa-trash-alt" id="icon-image"></i>{' '}Delete</button>
                             </div>
                         </div>
@@ -90,4 +92,19 @@ const TaskInfoComponent = (props) => {
         </Fragment>
     )
 }
-export default TaskInfoComponent;
+
+const mapStateToProps = (state)=>{
+    console.log(state)
+    return{
+        state
+    }
+}
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        show_edit: ()=> dispatch(show_edit())
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TaskInfoComponent);

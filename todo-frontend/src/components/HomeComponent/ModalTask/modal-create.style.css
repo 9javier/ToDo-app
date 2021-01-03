@@ -48,3 +48,12 @@ margin-right: 1%;
 .input-text:hover{
   border: 1.5px solid #4d2c4d;
 }
+#label-error{
+  color: red;
+}
+.error-active{
+  display: block;
+}
+.error-desactive{
+ display: none;
+}

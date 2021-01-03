@@ -20,6 +20,7 @@
   }
 
 .task-info{
+margin-top: -5%;
 z-index: 1;
 position: absolute;
 background-color:#fff;
@@ -38,9 +39,9 @@ td{
     max-height: 10px;
 }
 #title-app{
-  
   margin-left: 3%;
 }
+
 .main-content{
 width: 100%;
 height: 500px;
@@ -99,32 +100,60 @@ border: 1.5px solid rgb(230, 225, 225);
   text-decoration: none;
 }
 
+table{
+  height: 50px;
+  min-height: 50px;
+  max-height: 50px;
+}
+
+.wallper{
+  height: 90px;
+  -webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+background: #f7f5f5  no-repeat center center fixed;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+
 @media only screen and (min-width: 1201px) and (max-width:1300px){
   .task-info{
     width: 35%;
+    margin-top: -8%;
     }
 }
 
 @media only screen and (min-width: 900px) and (max-width: 1200px){
   .task-info{
     width: 45%;
+    margin-top: -8%;
     }
 }
 
 @media only screen and (min-width: 601px)  and (max-width: 900px) {
   .task-info{
     width: 45%;
+    margin-top: -10%;
     }
+   
 }
 
 @media only screen and (min-width: 501px) and (max-width: 600px)  {
   .task-info{
     width: 45%;
+    margin-top: -12%;
     }
 }
 
 @media only screen and (min-width: 200px) and (max-width: 500px) {
   .task-info{
     width: 68%;
+    margin-top: -15%;
+    }
+    .column-date{
+      display: none;
     }
 }
+

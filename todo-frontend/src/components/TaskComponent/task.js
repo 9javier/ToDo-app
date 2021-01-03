@@ -15,7 +15,7 @@ class TaskComponent extends React.Component {
                  id={this.props.status == "1" ? 'check-active' : 'check-desactive'}></a>
                  </td>
                 <td>{this.props.title}</td>
-                <td>{this.props.date}</td>
+                <td className="column-date">{this.props.date}</td>
                 <td>{this.props.desc}</td>
             </Fragment>
         )

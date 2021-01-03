@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import HeaderComponent from '../HeaderComponent/header';
 import TaskComponent from '../TaskComponent/task';
 import './home.style.css';
@@ -8,10 +8,15 @@ import  ModalTaskCreate  from './ModalTask/modal.create';
 import Table from 'react-bootstrap/Table';
 import TaskInfoComponent from '../TaskInfoComponent/taskInfoComponent';
 import { format } from "date-fns";
-export default class Home extends React.Component {
+import { connect } from 'react-redux';
+import {show, close} from '../../redux/actions/modalCreate.actions';
+import {show_edit, close_edit} from '../../redux/actions/modalEdit.actions';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+ class Home extends React.Component {
 
-    constructor(todoServices ){
-        super();
+    constructor(props,todoServices ){
+        super(props);
         this.todoServices = new TODO_SERVICES();
     }
 
@@ -26,6 +31,7 @@ export default class Home extends React.Component {
         infoTask: false
     }
     componentWillMount() {
+        console.log(this.props)
         this.getAllTask();
     }
 
@@ -64,7 +70,8 @@ export default class Home extends React.Component {
             this.setState({editModal: false});
             setTimeout(async ()=>{
                 const tasks = await this.todoServices.getAllTodos();
-                this.setState({taskList: tasks.response})
+                this.setState({taskList: tasks.response,infoTask: false})
+                this.msgSuccess('Tarea Modificada!!');
              }, 600);            
         }
     }
@@ -74,6 +81,7 @@ export default class Home extends React.Component {
             setTimeout(async ()=>{
             this.setState({createModal: false})
             this.getAllTask();
+            this.msgSuccess('Tarea Creada!!');
              }, 600);  
         }else if(e.modalCreate == false){
             this.setState({createModal: false})
@@ -94,6 +102,7 @@ export default class Home extends React.Component {
             setTimeout(async ()=>{
                 const tasks = await this.todoServices.getAllTodos();
                 this.setState({taskList: tasks.response})
+                this.msgSuccess('Tarea Eliminada!!')
              }, 600); 
         }
     }
@@ -129,7 +138,7 @@ export default class Home extends React.Component {
             if(filterTask.length >0){
                 this.setState({taskList: filterTask});
             }else{
-                alert('No se encuentra ninguna tarea con esa fecha!');
+                this.msgError('No se encontró ninguna tarea!!')
             }
         }
     }
@@ -138,11 +147,36 @@ export default class Home extends React.Component {
         const dateFormat = new Date(date+'');
         return format(dateFormat, "dd/MMM/yyyy")
     }
+  
+    msgSuccess = (msg) => {
+        toast.success(msg, {
+            position: "bottom-left",
+            autoClose: 1500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+    }
+
+    msgError = (msg)=>{
+        toast.error(msg, {
+            position: "bottom-left",
+            autoClose: 1500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+    }
 
     render() {
 return (
     <Fragment>
-        <h3 id="title-app">My Tasks</h3>
+        <br></br><h3 id="title-app">My Tasks</h3>
+        <ToastContainer />
         <div className="main-content" class="d-flex justify-content-center">
             <div className="content-table">
                 {
@@ -150,7 +184,7 @@ return (
                         <div className="task-info-wrap">
                             <div className="task-info" onClick={this.handleTaskInfo} 
                                 onChange={this.handleTaskChange}>
-                                <TaskInfoComponent id={this.state.editTakId} />
+                                <TaskInfoComponent id={this.state.editTakId}/>
                             </div>
                         </div> : ''
                 }
@@ -163,7 +197,7 @@ return (
                         <tr>
                             <th></th>
                             <th>Title</th>
-                            <th>Created</th>
+                            <th className="column-date">Created</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -182,19 +216,35 @@ return (
                     </tbody>
                 </Table>
                 {  /**   Modal Create Task */
-                    this.state.createModal == true ?
-                        <div onClick={this.handleCreateModal}>
-                            <ModalTaskCreate />
-                        </div> : ''}
+                   this.props.state.modalCreateTask == true ?
+                            <div onClick={this.handleCreateModal}><ModalTaskCreate /></div>:
+                        ''}
 
                 {  /**   Modal Edit Task */
-                    this.state.editModal == true ?
+                   this.props.state.modalEditTask == true ?
                         <div onClick={this.handleModalEdit}>
                             <ModalTaskComponent idTask={this.state.editTakId} />
                         </div> : ''}
             </div>
         </div>
+        <div className="wallper"></div>
     </Fragment>
         )
     }
 }
+
+const mapStateToProps = (state)=>{
+    return{
+        state
+    }
+}
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        show: ()=> dispatch(show()),
+        close: ()=> dispatch(close()),
+        show_edit: ()=> dispatch(show_edit()),
+        close_edit: ()=> dispatch(close_edit())
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home)

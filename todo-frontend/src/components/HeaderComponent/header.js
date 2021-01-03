@@ -1,10 +1,12 @@
 import { React, Fragment,useState } from 'react';
 import './header.style.css';
 import { Form } from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {show, close} from '../../redux/actions/modalCreate.actions';
 
-const HeaderComponent = () => {
+const HeaderComponent = ({ show,modalCreateTask}) => {
 
-   const handlerNewTask = (e) =>{
+   const openTask = (e) =>{
     e.newTask = true;
    }
 
@@ -18,7 +20,7 @@ const HeaderComponent = () => {
                 <strong>Tasks</strong>
                 <div className="actions">
                     <Form.Control type="date" id="input-date" onChange={handlerDate} />
-                    <button variant="link" onClick={handlerNewTask} className="button-task" id="button-task">
+                    <button variant="link" onClick={show} className="button-task" id="button-task">
                         <i class="fas fa-plus-circle"></i>{' '}
                         Add Task
                     </button>
@@ -27,4 +29,19 @@ const HeaderComponent = () => {
         </Fragment>
     )
 }
-export default HeaderComponent;
+const mapStateToProps = (state)=>{
+    return{
+        state
+    }
+}
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        show: ()=> dispatch(show()),
+        close: ()=> dispatch(close())
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+    )(HeaderComponent);
