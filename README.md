@@ -15,4 +15,6 @@
 
   1.- npm install
   
-  2.- npm start
+  2.- usar la rama master
+  
+  3.- npm start
